@@ -1,0 +1,38 @@
+services:
+  - type: web
+    name: agroverse-api
+    runtime: python
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: AGRO_DEVICE_TOKEN
+        generateValue: true
+      - key: AI_PROVIDER
+        value: local
+      - key: CORS_ORIGINS
+        value: '["https://agroverse-frontend.onrender.com"]'
+  - type: web
+    name: agroverse-frontend
+    runtime: node
+    plan: free
+    rootDir: frontend
+    buildCommand: corepack enable && pnpm install --frozen-lockfile --prod=false && pnpm build
+    startCommand: pnpm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22.19.0
+      - key: NEXT_PUBLIC_API_URL
+        value: https://agroverse-api.onrender.com/api
+      - key: NEXT_PUBLIC_WS_URL
+        value: wss://agroverse-api.onrender.com/api/ws/telemetry
+      - key: NEXT_PUBLIC_DEFAULT_DEVICE_ID
+        value: AGRO_001
+      - key: NEXT_PUBLIC_SUPABASE_URL
+        value: https://jephznwysluybqrvqbql.supabase.co
+      - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+        sync: false
