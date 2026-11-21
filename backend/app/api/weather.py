@@ -78,20 +78,30 @@ async def get_weather_forecast(
             },
         }
 
-    except httpx.TimeoutException:
+   
+    except httpx.TimeoutException as exc:
+        print(f"WEATHER TIMEOUT: {exc!r}")
         raise HTTPException(
             status_code=504,
-            detail="Weather provider timed out. Please try again."
+            detail="Weather provider timed out."
         )
 
-    except httpx.HTTPStatusError:
+    except httpx.HTTPStatusError as exc:
+        print(
+            f"WEATHER HTTP ERROR: "
+            f"status={exc.response.status_code}, "
+            f"body={exc.response.text[:500]}"
+        )
         raise HTTPException(
             status_code=502,
             detail="Weather provider returned an error."
         )
 
-    except httpx.RequestError:
+    except httpx.RequestError as exc:
+        print(f"WEATHER CONNECTION ERROR: {type(exc).__name__}: {exc!r}")
         raise HTTPException(
             status_code=502,
             detail="Could not connect to weather provider."
         )
+
+        
