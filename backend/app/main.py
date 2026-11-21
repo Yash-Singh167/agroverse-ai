@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
-from backend.app.core.config import settings
+from app.core.config import settings
 from backend.app.core.ai import GeminiAPIError, GeminiTimeoutError, generate_gemini_reply
 from backend.app.core.database import engine, Base, SessionLocal, get_db
 from backend.app.models.models import Device, Telemetry, IrrigationEvent, DeviceConfig, AIChatLog

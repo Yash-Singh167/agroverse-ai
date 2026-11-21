@@ -176,7 +176,7 @@ class AgroVerseAPITests(unittest.IsolatedAsyncioTestCase):
         with patch("backend.app.main.settings.AI_PROVIDER", "gemini"), \
              patch("backend.app.main.settings.GEMINI_API_KEY", "test-api-key"), \
              patch("backend.app.main.settings.LLM_MODEL", "gemini-test-model"), \
-             patch("backend.app.main.generate_gemini_reply", return_value="Gemini response") as generate:
+             patch("app.main.generate_gemini_reply", return_value="Gemini response") as generate:
             res = await self.client.post("/api/ai/chat", json=req)
 
         self.assertEqual(res.status_code, 200)
@@ -186,8 +186,8 @@ class AgroVerseAPITests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(generate.call_args.kwargs["conversation_history"][0]["role"], "user")
 
     async def test_11_gemini_chat_requires_server_api_key(self):
-        with patch("backend.app.main.settings.AI_PROVIDER", "gemini"), \
-             patch("backend.app.main.settings.GEMINI_API_KEY", ""):
+        with patch("app.main.settings.AI_PROVIDER", "gemini"), \
+             patch("app.main.settings.GEMINI_API_KEY", ""):
             res = await self.client.post("/api/ai/chat", json={"message": "Tell me about my crop"})
 
         self.assertEqual(res.status_code, 503)
