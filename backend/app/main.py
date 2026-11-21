@@ -137,6 +137,15 @@ def root():
         "timestamp": datetime.datetime.utcnow().isoformat()
     }
 
+# Health Check - UptimeRobot
+@app.get("/api/health", tags=["Health"])
+async def health_check():
+    return {
+        "status": "ok",
+        "service": "AgroVerse AI Backend",
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
+    }
+
 # 1. Ingest Telemetry (From Hardware or Web Feeder)
 @app.post("/api/telemetry", response_model=TelemetryResponse)
 def ingest_telemetry(payload: TelemetryPayload, db: Session = Depends(get_db)):
