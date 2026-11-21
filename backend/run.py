@@ -12,4 +12,4 @@ if __name__ == "__main__":
     print("Starting AgroVerse AI FastAPI Backend Server...")
     print("APIs available at http://127.0.0.1:8000")
     print("Swagger Docs available at http://127.0.0.1:8000/docs")
-    uvicorn.run("backend.app.main:app", host="0.0.0.0", port=8000, reload=False)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=False)

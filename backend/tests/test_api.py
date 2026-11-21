@@ -9,8 +9,8 @@ parent_dir = os.path.abspath(os.path.join(current_dir, "..", ".."))
 if parent_dir not in sys.path:
     sys.path.insert(0, parent_dir)
 
-from backend.app.main import app
-from backend.app.core.ai import generate_gemini_reply
+from app.main import app
+from app.core.ai import generate_gemini_reply
 
 class GeminiClientTests(unittest.TestCase):
     def test_request_uses_backend_key_and_extracts_reply(self):
@@ -24,7 +24,7 @@ class GeminiClientTests(unittest.TestCase):
             }]
         }
 
-        with patch("backend.app.core.ai.httpx.Client") as client_factory:
+        with patch("app.core.ai.httpx.Client") as client_factory:
             client = client_factory.return_value.__enter__.return_value
             client.post.return_value = response
             reply = generate_gemini_reply(
@@ -43,7 +43,7 @@ class GeminiClientTests(unittest.TestCase):
 
 class AgroVerseAPITests(unittest.IsolatedAsyncioTestCase):
     async def asyncSetUp(self):
-        self.provider_patcher = patch("backend.app.main.settings.AI_PROVIDER", "local")
+        self.provider_patcher = patch("app.main.settings.AI_PROVIDER", "local")
         self.provider_patcher.start()
         self.addCleanup(self.provider_patcher.stop)
         self.transport = ASGITransport(app=app)
@@ -173,9 +173,9 @@ class AgroVerseAPITests(unittest.IsolatedAsyncioTestCase):
             ]
         }
 
-        with patch("backend.app.main.settings.AI_PROVIDER", "gemini"), \
-             patch("backend.app.main.settings.GEMINI_API_KEY", "test-api-key"), \
-             patch("backend.app.main.settings.LLM_MODEL", "gemini-test-model"), \
+        with patch("app.main.settings.AI_PROVIDER", "gemini"), \
+             patch("app.main.settings.GEMINI_API_KEY", "test-api-key"), \
+             patch("app.main.settings.LLM_MODEL", "gemini-test-model"), \
              patch("app.main.generate_gemini_reply", return_value="Gemini response") as generate:
             res = await self.client.post("/api/ai/chat", json=req)
 

@@ -9,13 +9,13 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 
 from app.core.config import settings
-from backend.app.core.ai import GeminiAPIError, GeminiTimeoutError, generate_gemini_reply
-from backend.app.core.database import engine, Base, SessionLocal, get_db
-from backend.app.models.models import Device, Telemetry, IrrigationEvent, DeviceConfig, AIChatLog
-from backend.app.schemas.telemetry import TelemetryPayload, TelemetryResponse, SensorLatestResponse, SensorHistoryPoint, HistoryFilterResponse
-from backend.app.schemas.irrigation import IrrigationControlRequest, IrrigationModeRequest, IrrigationControlResponse, IrrigationHistoryResponse, IrrigationEventItem
-from backend.app.schemas.device import DeviceStatusResponse
-from backend.app.schemas.ai import AIChatRequest, AIChatResponse, AIPredictionResponse
+from app.core.ai import GeminiAPIError, GeminiTimeoutError, generate_gemini_reply
+from app.core.database import engine, Base, SessionLocal, get_db
+from app.models.models import Device, Telemetry, IrrigationEvent, DeviceConfig, AIChatLog
+from app.schemas.telemetry import TelemetryPayload, TelemetryResponse, SensorLatestResponse, SensorHistoryPoint, HistoryFilterResponse
+from app.schemas.irrigation import IrrigationControlRequest, IrrigationModeRequest, IrrigationControlResponse, IrrigationHistoryResponse, IrrigationEventItem
+from app.schemas.device import DeviceStatusResponse
+from app.schemas.ai import AIChatRequest, AIChatResponse, AIPredictionResponse
 
 # Initialize database schema
 Base.metadata.create_all(bind=engine)
