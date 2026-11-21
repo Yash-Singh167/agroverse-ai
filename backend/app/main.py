@@ -16,6 +16,7 @@ from app.schemas.telemetry import TelemetryPayload, TelemetryResponse, SensorLat
 from app.schemas.irrigation import IrrigationControlRequest, IrrigationModeRequest, IrrigationControlResponse, IrrigationHistoryResponse, IrrigationEventItem
 from app.schemas.device import DeviceStatusResponse
 from app.schemas.ai import AIChatRequest, AIChatResponse, AIPredictionResponse
+from app.api.weather import router as weather_router
 
 # Initialize database schema
 Base.metadata.create_all(bind=engine)
@@ -44,6 +45,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(weather_router)
 
 # Active WebSocket connections manager
 class ConnectionManager:
